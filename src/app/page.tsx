@@ -1,8 +1,45 @@
 "use client";
 
+import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { ArrowRight, Star } from 'lucide-react';
 import { motion, Variants } from 'framer-motion';
+
+const ImageSequencePlayer = () => {
+  const [currentFrame, setCurrentFrame] = useState(0);
+  const totalFrames = 60; // We extracted 60 frames
+
+  useEffect(() => {
+    let frame = 0;
+    const interval = setInterval(() => {
+      frame = (frame + 1) % totalFrames;
+      setCurrentFrame(frame);
+    }, 60); // Roughly 16fps to stretch out the short loop
+
+    return () => clearInterval(interval);
+  }, []);
+
+  return (
+    <motion.div
+      initial={{ scale: 1.15, opacity: 0 }}
+      animate={{ scale: 1, opacity: 1 }}
+      transition={{ duration: 3, ease: "easeOut" }}
+      className="w-full h-full relative"
+    >
+      {/* We use an array of images and toggle opacity to prevent flashing between frame loads */}
+      {Array.from({ length: totalFrames }).map((_, i) => (
+        <img
+          key={i}
+          src={`/assets/frames/frame_${i.toString().padStart(3, '0')}.jpg`}
+          className="absolute inset-0 w-full h-full object-cover select-none pointer-events-none transition-opacity duration-0"
+          style={{ opacity: currentFrame === i ? 1 : 0 }}
+          alt=""
+          fetchPriority={i < 5 ? 'high' : 'auto'}
+        />
+      ))}
+    </motion.div>
+  );
+};
 
 export default function Home() {
   const fadeUp: Variants = {
@@ -14,10 +51,7 @@ export default function Home() {
     hidden: { opacity: 0 },
     visible: {
       opacity: 1,
-      transition: {
-        staggerChildren: 0.3,
-        delayChildren: 0.2
-      }
+      transition: { staggerChildren: 0.3, delayChildren: 0.2 }
     }
   };
 
@@ -26,16 +60,9 @@ export default function Home() {
 
       {/* 1. HERO SECTION */}
       <section className="relative w-full flex-grow flex items-center justify-center bg-suya-dark overflow-hidden">
-        {/* Background GIF for Universal Compatibility */}
+        {/* React Frame Sequence Player */}
         <div className="absolute inset-0 z-0 overflow-hidden bg-suya-dark">
-          <motion.img
-            src="/assets/suyafire.gif"
-            alt="Suya Fire Background"
-            initial={{ scale: 1.15, opacity: 0 }}
-            animate={{ scale: 1, opacity: 1 }}
-            transition={{ duration: 3, ease: "easeOut" }}
-            className="w-full h-full object-cover"
-          />
+          <ImageSequencePlayer />
         </div>
 
         <motion.div
