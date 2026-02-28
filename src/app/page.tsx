@@ -28,12 +28,14 @@ export default function Home() {
       <section className="relative w-full flex-grow flex items-center justify-center bg-suya-dark overflow-hidden">
         {/* Background GIF for Universal Compatibility */}
         <div className="absolute inset-0 z-0 overflow-hidden bg-suya-dark">
-          <motion.div
+          <motion.img
+            src="/assets/suyafire.gif"
+            alt="Suya Fire Background"
             initial={{ scale: 1.15, opacity: 0 }}
             animate={{ scale: 1, opacity: 1 }}
             transition={{ duration: 3, ease: "easeOut" }}
-            className="w-full h-full bg-[url('/assets/suyafire.gif')] bg-cover bg-center"
-          ></motion.div>
+            className="w-full h-full object-cover"
+          />
         </div>
 
         <motion.div
