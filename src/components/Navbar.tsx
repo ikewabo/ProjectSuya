@@ -93,15 +93,13 @@ export default function Navbar() {
                                     {link.name}
                                 </Link>
                             ))}
-                            <div className="pt-4">
-                                <Link
-                                    href="/shop"
-                                    onClick={() => setIsOpen(false)}
-                                    className="block w-full text-center bg-suya-red text-white px-6 py-3 rounded-xl font-bold shadow-md"
-                                >
-                                    Order Now
-                                </Link>
-                            </div>
+                            <Link
+                                href="/shop"
+                                onClick={() => setIsOpen(false)}
+                                className="block w-full text-center bg-suya-red text-white px-6 py-3 rounded-xl font-bold shadow-md"
+                            >
+                                Order Now
+                            </Link>
                         </div>
                     </motion.div>
                 )}
